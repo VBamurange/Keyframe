@@ -12,41 +12,46 @@ public class CircularPageController : MonoBehaviour
 
     public Animator animator;
 
+    private enum PageState
+    {
+        //Page1,
+        //Page2,
+        //Page3
+        Panel1,
+        Panel2,
+        Panel3
+    }
+
+    private PageState _currentPage;
+    
+
     private void Start()
     {
-        nextButton1.onClick.AddListener(GoToPage2);
-        nextButton2.onClick.AddListener(GoToPage3);
-        prevButton1.onClick.AddListener(GoBackToPage1);
-        prevButton2.onClick.AddListener(GoBackToPage2);
+        
+
+        _currentPage = PageState.Panel1;
+        
+
+        SetButtonListeners();
     }
 
-    private void GoToPage2()
+
+    private void SetButtonListeners()
     {
-        animator.SetBool("Page1", false);
-        animator.SetBool("Page2", true);
-        animator.SetBool("Page3", false);
+        nextButton1.onClick.AddListener(() => TransitionToPage(PageState.Panel2));
+        nextButton2.onClick.AddListener(() => TransitionToPage(PageState.Panel3));
+        prevButton1.onClick.AddListener(() => TransitionToPage(PageState.Panel1));
+        prevButton2.onClick.AddListener(() => TransitionToPage(PageState.Panel2));
     }
 
-    private void GoToPage3()
+    private void TransitionToPage(PageState targetPage)
     {
-        animator.SetBool("Page1", false);
-        animator.SetBool("Page2", false);
-        animator.SetBool("Page3", true);
-    }
+        animator.SetBool("Page1", targetPage == PageState.Panel1);
+        animator.SetBool("Page2", targetPage == PageState.Panel2);
+        animator.SetBool("Page3", targetPage == PageState.Panel3);
 
-    private void GoBackToPage1()
-    {
-        animator.SetBool("Page1", false);
-        animator.SetBool("Page2", true);
-        animator.SetBool("Page3", false);
-    }
+        _currentPage = targetPage;
 
-    private void GoBackToPage2()
-    {
-        animator.SetBool("Page1", true);
-        animator.SetBool("Page2", false);
-        animator.SetBool("Page3", false);
     }
-
 
 }
